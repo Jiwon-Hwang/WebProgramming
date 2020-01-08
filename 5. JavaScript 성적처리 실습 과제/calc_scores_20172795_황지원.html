@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+ <head>
+  <meta charset="UTF-8"> 
+ <title>성적표</title>
+	<script>
+		//this : 클래스로부터 생성되는 인스턴스 중 현재! 객체. 
+		//this : 함수 안에 있을때, this는 이 함수의 주인! 따라서 student function의 주인은 [object Window]!
+
+		// 학생 object
+		function student(num0, num1, num2, num3, num4, result, avg, max, min){
+			this.num0 = num0;
+			this.num1 = num1;
+			this.num2 = num2;
+			this.num3 = num3;
+			this.num4 = num3;
+			this.result = result; //합계
+			this.avg = avg;
+			this.max = max;
+			this.min = min;
+			this.toString=function(){
+				return"학번 : " + num0 + " / 국어 : " + num1 + "점 / 영어 : " + num2 + "점 / 수학 : " + num3 + "점 / 컴퓨터 : " + num4 
+				+ "점 / 합계 : " + result + "점 <br>"};
+		}; // toString : object 안에 있는 빌트인 메소드. (문자열로 바꿔줌...숫자나 배열안 값들을 ,로 이어서 문자열로 바꿔 출력)
+
+		// 학생 object을 item으로 갖고 있는 array (전역변수 ==> 초기화되지않고 계속 등록, 누적되어야 하므로)
+		var allresult = [];
+		var calFinished;
+
+		// 학생 1명당 합계, 평균, 최대, 최소값 구하여 해당 edit box에 값을 넣기
+		// "계산하기" button click시 호출되는 함수
+		function calculate_scores(){
+			// 국어, 영어, 수학, 컴퓨터 4개 값 입력받아서 배열에 넣기
+			var inputscores=[]; 
+			// 4개 값 하나씩 순서대로 체크해서 숫자가 아니면 제대로 입력할때까지 alert창 띄우고, 그게아니면(else) 배열에 넣기!
+			// 학번값도 같이 체크해주기(따라서 i=0~4 : 5개의 input값)
+			for (var i=0; i<5; i++){
+				var x = document.getElementsByClassName("input")[i].value;
+				if(x=="" || isNaN(Number(x)) || x.indexOf(" ")!==-1){  //***빈칸이거나, 숫자가 아닐때(문자 or space를 포함하고있을때) ==> indexOf해서 갖고 있지 않으면 -1반환!(-1이 아니면(!==) 공백 있는거)
+					alert("올바른 값을 입력해주세요!");
+					return 0;  //retrun 0 : 해당 함수의 동작을 종료하고, 함수를 호출한 곳으로 돌아감. 
+				}
+				else{
+					if(i==0)
+						continue; //continue는 이하 문장들을 수행하지 않고 반복문으로 돌아감(i++) / cf. break는 가장 가까운 반복문을 탈출함
+					else
+						inputscores[i-1] = Number(x); 
+						//Q. Number안하면 걍 저 .value값이 문자열? input type number인데..
+						//A. type과 상관없이 문자열임! 왜냐면 <input>태그의 속성인 value의 속성값으로 value="" 이렇게 문자열로 들어감!(string type) 
+						//==> 따라서 숫자(number type)로 바꿔줘야함!(숫자 연산시)
+				}
+			}
+
+			//.value : input 태그의 속성인 value의 값을 가져오는 것! (the value of a node attribute)
+			document.getElementById("result").value=result(inputscores); //합계(result)
+			document.getElementById("avg").value=avg(inputscores); //평균(avg)
+			document.getElementById("max").value=max(inputscores); //최대값(max)
+			document.getElementById("min").value=min(inputscores); //최소값(min)
+
+			calFinished = true; // 계산이 다 끝나면 전역변수인 calFinished 값을 true로 바꿔주기! ==> for. 뒤에 학생등록 버튼 누르기 위한 전제조건!!(계산 전에는 학생등록 불가능하도록...)  
+		}
+
+
+		function result(inputscores){
+			var result=0;
+			for (var i=0; i<4; i++){
+				result += inputscores[i];
+			}
+
+			return result;
+		}
+
+		function avg(inputscores){
+			var avg=0;
+			avg=result(inputscores)/4;
+
+			return avg;
+		}
+
+		function max(inputscores){
+			var max=0;
+			max = Math.max.apply(null,inputscores);
+			
+			return max;
+		}
+
+		function min(inputscores){
+			var min=0;
+			min = Math.min.apply(null,inputscores);
+
+			return min;
+		}
+		
+
+// Q. num0~5 변수에 각각 값 []인덱스로 넣을 때, 좀 더 효율적인 방법 없을까..?ㅠㅠ
+
+		// 학생 객체를 allresult array객체에 넣고 학생 성적표에 전체 학생정보 display
+		// "학생등록" button click시 호출되는 함수
+		function addItemtoList(){
+			if (!calFinished){ //calFinished가 false이면 !calFinished = true.
+				alert("계산하기를 완료해주세요!");
+				return 0;
+			}
+			else {
+				var num0 = document.getElementsByClassName("input")[0].value; //학번
+				var num1 = document.getElementsByClassName("input")[1].value; //국어
+				var num2 = document.getElementsByClassName("input")[2].value; //영어
+				var num3 = document.getElementsByClassName("input")[3].value; //수학
+				var num4 = document.getElementsByClassName("input")[4].value; //컴퓨터
+				var result = document.getElementsByClassName("input")[5].value; //수학
+				// 모두 local 변수. 아래에서 allresult 배열에 push할 때도 쓸 수 있음! 같은 function안에서 push하는거니까.
+
+				// for문 문법 잘 알아두기!! ==> for(var 배열안모든데이터탐색해줄 *인덱스* in 배열명)
+				for (var studentId in allresult){
+					if(num0 === allresult[studentId].num0){
+						alert("이미 존재하는 학번입니다!");
+						return 0; // return 0; 하나 return ; 이렇게 하나 똑같이 함수 종료.
+					}
+				}
+
+				// 학생 객체를 allresult array객체에 넣기 / var allresult=[]; 학생 object을 item으로 갖고 있는 array (전역변수)
+				// new : object(객체) 하나 생성
+				allresult.push(new student(num0, num1, num2, num3, num4, result));  //==> 배열에 하나씩 추가해라! 
+
+				// 학생 성적표에 전체 학생정보 display  
+				resultList();
+				// EditBox 초기화(전체 학생정보 display 후)
+				initializeEditBox();
+				}
+		}
+
+		// 학생 성적표에 전체 학생정보 display
+		function resultList(){
+			// "계산하기" 누르지 않은 상태로 "학생등록" 눌렀을 때 예외처리 해주기!!!!!!!!!!!!!!!
+
+			var tempString="";
+			for(var key in allresult){
+				tempString += allresult[key].toString();  //얘를 부른게 위에 student 함수의 this.toString 부른거임!(즉, 함수의 return값인 문자열 쭉)
+			}	
+			document.getElementById("ppl").innerHTML = tempString; // "ppl"은 "학생성적표" 라고 써져있는 fieldset부분 div
+		}
+
+		// EditBox만 초기화(전체 학생정보 display 후 입력했던 5개값 삭제)
+		function initializeEditBox(){
+			for(var i=0; i<5; i++){
+				document.getElementsByClassName("input")[i].value = "";
+			}
+
+			calFinished = false; // 성적표에 입력 하고나서 입력창5개 초기화까지 끝나면 새로운 입력 전에 전역변수인 calFinished도 false로 바꿔놓기!
+		}
+		
+	</script>
+	</head>
+	<body>
+		<table>
+			<tr>
+				<td colspan=1><b>학번 : </b></td>
+				<td colspan=3><input class="input" type="text" id="num0" name="num0" value=""></td> 
+			</tr>
+			<tr>
+				<td>국어</td> <!--value="디폴트입력값설정". number type인 input태그의 value속성값 안쓰면 디폴트로 0들어감-->
+				<td><input class="input" type="number" id="num1" name="num1" value=""></td>
+				<td>영어</td>
+				<td><input class="input" type="number" id="num2" name="num2" value=""></td>
+			</tr>
+			<tr>
+				<td>수학</td>
+				<td><input class="input" type="number" id="num3" name="num3" value=""></td>
+				<td>컴퓨터</td>
+				<td><input class="input" type="number" id="num4" name="num4" value=""></td>
+			</tr>
+			<tr>
+				<td colspan=4><hr></td>
+			</tr>
+			<tr>
+				<td><input type=button value="계산하기" onclick="calculate_scores()"></td>
+				<td><input type=button value="학생등록" onclick="addItemtoList()"></td>
+			</tr>
+			<tr>
+				<td>합계</td>
+				<td><input class="input" type="number" id="result" name="result"></td>
+				<td>평균</td>
+				<td><input class="input" type="number" id="avg" name="avg"></td>
+			</tr>
+			<tr>
+				<td>최대값</td>
+				<td><input class="input" type="number" id="max" name="max"></td>
+				<td>최소값</td>
+				<td><input class="input" type="number" id="min" name="min"></td>
+			</tr>
+		 </table>
+		
+		<p></p>
+		<fieldset> <!-- <fieldset> : 테두리선 만들고 여러개 요소들을 하나의 필드로 묶어줌 -->
+			<legend>학생 성적표</legend> <!-- <legend> : 해당 field에 제목 달아줌(cf. lendend : '범례') -->
+			<div id="ppl"></div>
+		</fieldset>
+
+	</body>
+
+	</html>

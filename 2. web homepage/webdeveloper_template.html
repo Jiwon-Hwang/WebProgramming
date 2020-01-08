@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en"> <!-- for.웹 접근성. lang 설정안하면 검색엔진에서 지원하는 기능(ex. 자동 음성 변환 등)에 제대로 결과 안나올 수도 있음-->
+  <head>
+    <meta charset="utf-8">  <!-- 문자 인코딩 방식-->
+	<title>Web Developer</title>
+	<style>
+		table, th, td {
+			border:1px solid black;
+		}
+	</style>
+    
+  </head>
+  <body>
+
+   <div class="container">
+
+	    <div class="logo">
+	    	<img src="webDeveloper.png" alt="webDeveloper">
+	   	</div>
+
+	    <h1>About</h1>
+
+	    <p class="intro">It can be intimidating for women to learn and ask questions when
+			they are in an <b>extreme minority</b>. While open and welcoming, today's budding
+			developer community is up to <b>91% male</b>. If we empower more females with the 
+			confidence in their technological capabilities <i>we can begin to change the landscape.</i>
+		</p>
+
+		<br>
+
+	    <h2>Our Locations</h2>
+
+	    <ul>
+	      <li>USA
+	        <ul>
+	        	<li><a href="#">New York</a></li> <!-- <a href="#"> 는 의미없는 링크! 페이지전환x -->
+				<li><a href="#">Columbus</a></li>
+				<li><a href="#">Austin</a></li> 
+				<li><a href="#">Philly</a></li>
+			</ul>
+			<li>World
+				<ul>
+					<li><a href="#">Ottawa</a></li>
+					<li><a href="#">Sydney</a></li>
+				</ul>
+	 		</li>
+	    </ul>
+		
+		<br>
+		<br>
+
+		<h2>Upcoming Classes</h2>
+
+		<!-- style="border: 선굵기, 선모양, (선색깔) -->
+		<table style= "margin: auto;"> <!-- 페이지의 center로 옴. 좌우로..-->
+			<tr>
+				<th>Location</th>
+				<th>Topic</th>
+			<tr>
+				<td>New York</td>
+				<td>Javascript & JQuery</td>
+			</tr>
+			<tr>
+				<td>San Francisco</td>
+				<td>HTML & CSS</td>
+			</tr>				
+		</table>
+
+		<h2>Sign Up!</h2>
+
+		<!-- <form> : 입력된 데이터를 한 번에 서버로 전송. -->
+		<!-- action : 폼을 저장할 서버 쪽 스크립트 파일(url) 지정-->
+		<!-- method : http종류인 GET 또는 POST 지정. GET은 폼데이터를 url뒤에 붙여 보이게, POST는 안보이게-->
+		
+		<!-- <label> : 폼의 양식에 이름을 붙이는 태그. 입력창(input, button, 체크박스, 라디오) 등의 이름표-->
+		<!-- <input> 태그만으로 선택하기 어렵거나 ***더 좋은 사용자 경험을 제공***하기 위한 용도. 클릭 가능 영역 넓어짐!-->
+		<!-- <label for> : label의 'for 값 = id 값' 이면 연결됨. 즉, label태그와 input과같은 입력양식창 연결시 사용!-->
+		<!-- <input> : 사용자가 폼 태그에 입력할 수 있는 공간 생성. -->
+		<!-- <input type> 종류 : button, checkbox, radio, password, submit, text, url 등 -->
+		<form action="http://example.org" method="POST" name="my-form">
+
+			<!-- Name: -->
+			<label for="Name:">Name:</label>
+			<input type="text" name="username" id="Name:"><br>
+			<!-- <label> 태그 적용 후에는 Name: 이라는 텍스트를 선택해도 입력창 선택됨!-->
+			
+			<!-- Email: -->
+			<label for="Email:">Email:</label>
+			<input type="text" name="useremail" id="Email:"><br>
+			
+			<!-- Location: -->
+			<label for="Location:">Location:</label>
+			<select name = "location">
+				<option value="San Francisco">San Francisco</option>
+				<option value="New York">New York</option>
+			</select>
+			<!-- form 요소 중 <select> & <option> : 리스트박스(셀렉트박스, 콤보박스)-->
+			
+			<!-- Gender: -->
+			<fieldset>
+				<legend>Gender:</legend>
+				<input type="radio" name="gender" value="male"> Male
+				<input type="radio" name="gender" value="female"> Female
+			</fieldset>
+			<!-- <fieldset> : fieldset 요소로 묶인 영역 주변에 ***테두리 선***이 나타난다.-->
+			<!-- <legend> : <fieldset> 제목(LEGEND)을 표시. '필드셋의' 제목!! 다른 제목x-->
+
+			<!-- Experience: -->
+			<label for="Experience:">Experience:</label><br>
+			<textarea id="Experience:"></textarea>
+			<br>
+
+			<!-- Sign up (submit 버튼 : submit 타입!)-->
+			<input type="submit" value="Sign up">
+		
+		 </form>
+   </div>
+
+  </body>
+
+</html>

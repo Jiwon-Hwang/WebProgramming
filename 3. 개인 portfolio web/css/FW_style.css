@@ -1,0 +1,25 @@
+.container{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-container{
+  display: flex;
+  max-height: 80vh;
+  max-width: 55vw;
+  margin: 5%;
+}
+
+.img-container img{
+  max-height: 80vh;
+  max-width: 100%;
+}
+
+.description{
+  display: inline-block;
+  width: 500px;
+}

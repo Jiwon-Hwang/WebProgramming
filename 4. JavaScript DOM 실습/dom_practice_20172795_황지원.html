@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JavaScript and the Document Object Model</title>
+    </head>
+    <body>
+        <div id="page">
+            <div id="header"><h1 id="title">Page title</h1></div>
+            <div id="content"><h2>Content title</h2><p>Some copy goes here</p><p>More copy goes here</p></div>
+        </div>
+        
+        <script>
+            //(cf. Page title 같은 문자열 : ***text node!*** 이고, 이 text node의 값 : "Page title" / 그냥 <h1>까지만 왔으면(text노드의 부모) ***element node*** ! 값은 NULL임!!
+            
+
+            //문제 1. Traversing the DOM (DOM navigation. selecting)
+            //1-1. Use the firstChild property to access an element.                
+            var val11 = document.getElementById("title").firstChild.nodeValue;
+            //        = document.getElementById("content").innerHTML;                (innerHTML = firstChild의 node value(=text node의 value!)에 접근)
+            //        = document.getElementById("content").childNodes[0].nodeValue;  (id="content"인 element의 자식노드들 중 첫번째 자식 노드의 value에 접근. firstChild=childNodes[0])
+
+            //1-2. Use the lastChild property to access an element.
+            var val12 = document.getElementById("content").lastChild.innerHTML;  //alert(val12); //More copy goes here
+
+            //1-3. Use the nextSibling property to access an element.
+            var val13 = document.getElementById("header").nextSibling.nextSibling;  //alert(val13.childNodes[1].innerHTML); //Some copy goes here
+          
+            //1-4. Use the previousSibling property to access an element.
+            var val14 = document.getElementById("content").previousSibling.previousSibling; //alert(val14.firstChild.innerHTML); //Page title
+
+            //1-5. Use the parentNode property to access an element. 
+            var val15 = document.getElementsByTagName("p")[1].parentNode.previousSibling.previousSibling.firstChild.innerHTML;  //alert(val15); //Page title
+
+            //1-6. Use the childNodes property to access a group of child elements.
+            var val16 = document.getElementById("content").childNodes[0].childNodes[0].nodeValue;  // alert(val16); //Content title
+
+
+
+            //문제 2. Targeting Nodes
+            //2-1. Retrieve the value of a node using nodeValue.  : 노드 값을 찾아라
+            var val21 = document.getElementById("title").firstChild.nodeValue;
+
+            //2-2. Change the value of a node using nodeValue.
+            document.getElementById("title").firstChild.nodeValue = "Page title changed!";
+
+            //2-3. Retrieve the value of a node attribute. : element의 속성의 값을 찾아라(ex. <div>의 id 값)
+            //In the DOM, attributes are nodes. Every HTML attribute is an attribute node (권장x) //nodeName, nodeType is read-only => 바꿀 수 없음!!
+            var val23 = document.getElementById("page").id; // alert(val23); //page
+            
+            //2-4. Change the value of a node attribute. 
+            document.getElementById("page").id = "newPage";  //alert(document.getElementById("newPage").id); //newPage
+            
+
+
+            //문제 3. Manipulating the DOM (DOM Nodes)
+            //3-1. Use the appendChild method to add a node. : 맨 뒤에다가만 새로운 element 추가 (자식으로다가 추가됨)
+            var para31 = document.createElement("p");
+            var bold31 = document.createElement("b");
+            var tnode31 = document.createTextNode("I append new paragraph!");  // <p> <b>append new paragraph!</b> </p>
+            
+            bold31.appendChild(tnode31);
+            para31.appendChild(bold31);
+
+            document.getElementById("content").appendChild(para31); // 최종적으로 기존에 있던 "content" 부분에 맨 뒤에 자식으로! para31 추가
+
+            //3-2. Use the insertBefore method to add a node. : 아무데다가 중간에 새로운 element 추가 (자식으로다가 추가됨)
+            var head32 = document.createElement("h5");
+            var tnode32 = document.createTextNode("I insert new h5!");
+            head32.appendChild(tnode32);  // <h3>I insert new h3!</h3> (head32에 tnode32를 맨 뒤에 자식으로 붙이기)
+
+            document.getElementById("content").insertBefore(head32, para31); // "content"부분에 자식으로! 추가할건데, (***head32를***, para31 전에) 삽입해라!
+
+            //3-3. Use the removeChild method to remove a node.
+            document.getElementsByTagName("p")[0].remove();  // <p>Some copy goes here</p> 제거
+
+            //3-4. Use the replaceChild method to replace a node. 
+            //replaceChild(a,b) : ***a로*** (b를) 대체하겠다!. 근데 일단 부모 element(=node) 찾아와서 그 부모의 자식으로 만드는 것!
+            var para34 = document.createElement("p");
+            var tnode34 = document.createTextNode("It will be replaced with some node...");
+            para34.appendChild(tnode34);
+            document.getElementById("content").appendChild(para34);
+
+            var newPara34 = document.createElement("p");
+            var newTnode34 = document.createTextNode("This is new paragraph! Using 'replaceChild'!");
+            newPara34.appendChild(newTnode34);
+            document.getElementById("content").replaceChild(newPara34, para34);
+
+
+        </script>
+    </body>
+</html>
